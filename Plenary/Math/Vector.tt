@@ -1,0 +1,184 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core"#>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System.Runtime.InteropServices;
+using System;
+
+namespace Plenary.Math {
+<#
+  for (var N = 2; N < 5; ++N) {
+    foreach (var Tp in new []{"ffloat", "ddouble", "iint", "bsbyte"}) {
+      var T = Tp.Substring(1);
+      var typename = String.Format("Vec{0}{1}", N, Tp[0]);
+      var fields = new []{"X", "Y", "Z", "W"}.Take(N);
+#>
+
+  [Serializable]
+  [StructLayout(LayoutKind.Sequential)]
+    public partial struct <#= typename #> {
+
+    public static readonly <#= typename #> One = new <#= typename #>(<#= string.Join(", ", fields.Select(_ => "1")) #>);
+    public static readonly <#= typename #> Zero = new <#= typename #>(<#= string.Join(", ", fields.Select(_ => "0")) #>);
+
+    public <#= T #> <#= String.Join(", ", fields)#>;
+
+    public <#= typename #> (<#= T #> <#= String.Join(", " + T + " ", fields.Select(s => s.ToLower())) #>) {
+      <# foreach (var f in fields) { #>
+      <#= f #> = <#= f.ToLower() #>;
+      <# } #>
+    }
+
+    <# if (T == "float") { #>
+    public <#= typename #> (double <#= String.Join(", double ", fields.Select(s => s.ToLower())) #>) {
+      <# foreach (var f in fields) { #>
+      <#= f #> = (float) <#= f.ToLower() #>;
+      <# } #>
+    }
+    <# } #>
+
+    public static implicit operator <#= typename #> (<#= T #> v) {
+      return new <#= typename #>(<#= String.Join(", ", fields.Select(_ => "v")) #>);
+    }
+
+    public static <#= typename #> operator+ (<#= typename #> a, <#= typename #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> += b.<#= f #>;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator- (<#= typename #> a, <#= typename #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> -= b.<#= f #>;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator* (<#= typename #> a, <#= typename #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> *= b.<#= f #>;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator/ (<#= typename #> a, <#= typename #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> /= b.<#= f #>;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator% (<#= typename #> a, <#= typename #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> %= b.<#= f #>;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator+ (<#= typename #> a, <#= T #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> += b;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator- (<#= typename #> a, <#= T #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> -= b;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator* (<#= typename #> a, <#= T #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> *= b;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator/ (<#= typename #> a, <#= T #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> /= b;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator% (<#= typename #> a, <#= T #> b) {
+      <# foreach (var f in fields) { #>
+      a.<#= f #> %= b;
+      <# } #>
+      return a;
+    }
+
+    public static <#= typename #> operator+ (<#= T #> a, <#= typename #> b) {
+      <#= typename #> c = a;
+      <# foreach (var f in fields) { #>
+      c.<#= f #> += b.<#= f #>;
+      <# } #>
+      return c;
+    }
+
+    public static <#= typename #> operator- (<#= T #> a, <#= typename #> b) {
+      <#= typename #> c = a;
+      <# foreach (var f in fields) { #>
+      c.<#= f #> -= b.<#= f #>;
+      <# } #>
+      return c;
+    }
+
+    public static <#= typename #> operator* (<#= T #> a, <#= typename #> b) {
+      <#= typename #> c = a;
+      <# foreach (var f in fields) { #>
+      c.<#= f #> *= b.<#= f #>;
+      <# } #>
+      return c;
+    }
+
+    public static <#= typename #> operator/ (<#= T #> a, <#= typename #> b) {
+      <#= typename #> c = a;
+      <# foreach (var f in fields) { #>
+      c.<#= f #> /= b.<#= f #>;
+      <# } #>
+      return c;
+    }
+
+    public static <#= typename #> operator% (<#= T #> a, <#= typename #> b) {
+      <#= typename #> c = a;
+      <# foreach (var f in fields) { #>
+      c.<#= f #> %= b.<#= f #>;
+      <# } #>
+      return c;
+    }
+
+    public <#= T #> LengthSquared {
+      get {
+        <#= T #> t = 0;
+        <# foreach (var f in fields) { #>
+        t += (<#= T #>) (<#= f #> * <#= f #>);
+        <# } #>
+        return t;
+      }
+    }
+
+    public <#= T #> Length {
+      get {
+        return (<#= T #>) System.Math.Sqrt(LengthSquared);
+      }
+    }
+
+    public <#= typename #> Normalized {
+      get {
+        return this / Length;
+      }
+    }
+
+  }
+
+<#
+} }
+#>
+
+}

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{71A51D2B-E181-4724-9573-7F5407CC4508}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Plenary</RootNamespace>
+    <AssemblyName>Plenary</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="OpenTK">
+      <HintPath>..\packages\OpenTK.Next.1.2.2336.6514-pre\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\packages\MathNet.Numerics.3.13.1\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MathNet.Spatial">
+      <HintPath>..\packages\MathNet.Spatial.0.2.0-alpha\lib\net40\MathNet.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <Package>monodevelop</Package>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Math\Quaternion.cs" />
+    <Compile Include="Minimods\Minimod.PrettyText.Generated.cs" />
+    <Compile Include="Minimods\Minimod.PrettyTypeSignatures.Generated.cs" />
+    <Compile Include="Minimods\Minimod.PrettyDateAndTime.Generated.cs" />
+    <Compile Include="Minimods\Minimod.PrettyPrint.Generated.cs" />
+    <Compile Include="Math\Matrix.cs">
+      <DependentUpon>Matrix.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Math\Extensions.cs" />
+    <Compile Include="Math\Vector.cs">
+      <DependentUpon>Vector.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Math\VectorExtra.cs" />
+    <Compile Include="Math\MatrixExtra.cs" />
+    <Compile Include="SceneGraph\Camera.cs" />
+    <Compile Include="SceneGraph\DirectionalLight.cs" />
+    <Compile Include="SceneGraph\Filter.cs" />
+    <Compile Include="SceneGraph\IRenderable.cs" />
+    <Compile Include="SceneGraph\Manager.cs" />
+    <Compile Include="SceneGraph\Material.cs" />
+    <Compile Include="SceneGraph\Mesh.cs" />
+    <Compile Include="SceneGraph\PassRenderer.cs" />
+    <Compile Include="SceneGraph\Uniforms.cs" />
+    <Compile Include="OpenGL\Buffer.cs" />
+    <Compile Include="OpenGL\Framebuffer.cs" />
+    <Compile Include="OpenGL\Named.cs" />
+    <Compile Include="OpenGL\NamedString.cs" />
+    <Compile Include="OpenGL\Program.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="OpenGL\Renderbuffer.cs" />
+    <Compile Include="OpenGL\Shader.cs" />
+    <Compile Include="OpenGL\Texture.cs" />
+    <Compile Include="OpenGL\Utils.cs" />
+    <Compile Include="OpenGL\VertexArray.cs" />
+    <Compile Include="UI\Window.cs" />
+    <Compile Include="Primitives\Cube.cs" />
+    <Compile Include="Primitives\Rect.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+    <None Include="Math\Vector.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Vector.cs</LastGenOutput>
+    </None>
+    <None Include="Math\Matrix.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Matrix.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Math\" />
+    <Folder Include="SceneGraph\" />
+    <Folder Include="OpenGL\" />
+    <Folder Include="UI\" />
+    <Folder Include="Primitives\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlenaryGL\PlenaryInterop.csproj">
+      <Project>{E00D0D35-ED67-4D18-97D2-3CCC0DF77E9E}</Project>
+      <Name>PlenaryInterop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ASIF\ASIF.csproj">
+      <Project>{5EEABBFA-812C-4CC4-B562-347883AC3EF7}</Project>
+      <Name>ASIF</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
